@@ -1,5 +1,5 @@
 <script setup>
-import InicioLandpage from './components/InicioLandpage.vue';
+import InicioLandpage from './components/Inicio.vue';
 </script>
 
 <template>
