@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        redirect: '/vuelosdisponibles'
+        redirect: '/iniciolandpage'
     },
     {
         path: '/',
@@ -16,6 +16,11 @@ const routes = [
             }
         },
         children: [
+            {
+                path: '/iniciolandpage',
+                name: 'iniciolandage',
+                component: () => import('../components/InicioLandpage.vue')
+            },
             {
                 path: '/vuelosdisponibles',
                 name: 'vuelosdisponibles',
