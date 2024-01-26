@@ -43,8 +43,8 @@
                 <nav class="mb-3 mt-5">
                   <b-nav vertical>
                     <b-nav-item :to="{name: 'iniciolandage'}">Inicio</b-nav-item>
-                    <b-nav-item>Main</b-nav-item>
-                    <b-nav-item>Tercero</b-nav-item>
+                    <b-nav-item :to="{name: 'main'}">Main</b-nav-item>
+                    <b-nav-item :to="{name: 'tercero'}">Tercero</b-nav-item>
                   </b-nav>
                 </nav>
                 <p>
