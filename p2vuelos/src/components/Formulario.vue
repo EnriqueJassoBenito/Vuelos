@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-center">Hola esto es un formulario</h1>
 
-    <b-form>
+    <b-form @submit.stop.prevent="onSubmit">
 
       <b-container class="">
         <b-row >
@@ -10,33 +10,55 @@
             <h3>Datos</h3>
             <!-- Nombre completo -->
             <b-form-group id="name-1" label="Nombre" label-for="name" description="">
-              <b-form-input id="name" placeholder="Ingresa el nombre" v-model="form.name" :state="name"></b-form-input>
-              <b-form-invalid-feedback :state="name">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="name"></b-form-valid-feedback>
+              <b-form-input 
+                id="name" 
+                name="name"
+                placeholder="Ingresa el nombre" 
+                v-model="form.name" 
+                v-validate="{ required: true, min: 3, max: 20, alpha }"
+                :state="validateState('name')" 
+                aria-describedby="name-feedback"
+                data-vv-as="Nombre">
+              </b-form-input>
+              <b-form-invalid-feedback id="name-feedback">Debe ingresar el nombre</b-form-invalid-feedback>
             </b-form-group>
 
-            <b-form-group id="lastname-1" label="Apellido Paterno" label-for="lastname" description="">
-              <b-form-input id="lastname" placeholder="Ingresa apellido paterno" v-model="form.lastname" :state="lastname"></b-form-input>
-              <b-form-invalid-feedback :state="lastname">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="lastname"></b-form-valid-feedback>
+            <b-form-group id="lastname-1" label="Apellido Paterno" label-for="lastname">
+              <b-form-input 
+                id="lastname"
+                name="lastname" 
+                placeholder="Ingresa apellido paterno" 
+                v-model="form.lastname" 
+                v-validate="{ required: true, min: 4, max: 10, alpha }" 
+                :state="validateState('lastname')"
+                aria-describedby="lastname-feedback">
+              </b-form-input>
+              <b-form-invalid-feedback id="lastname-feedback">Debe ingresar el apellido materno</b-form-invalid-feedback>
             </b-form-group>
 
-            <b-form-group id="surname-1" label="Apellido Materno" label-for="surname" description="">
-              <b-form-input id="surname" placeholder="Ingresa apellido materno" ></b-form-input>
+            <b-form-group id="surname-1" label="Apellido Materno" label-for="surname">
+              <b-form-input
+                id="surname" 
+                name="surname"
+                placeholder="Ingresa apellido materno"
+                v-model="form.surname"
+                v-validate="{ alpha }"
+                :state="validateState('surname')"
+                aria-describedby="surname-feedback">
+              </b-form-input>
+              <b-form-invalid-feedback id="surname-feedback">Debe ingresar el apellido materno</b-form-invalid-feedback>
             </b-form-group>
 
             <!-- Fecha de nacimiento -->
             <!-- v-model="value" -->
             <b-form-group id="date" label="Fecha de nacimiento" label-for="date" description="">
-              <b-form-datepicker id="date" class="mb-2" v-model="date" :state="date"></b-form-datepicker>
-              <b-form-invalid-feedback :state="date">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="date"></b-form-valid-feedback>
+              <b-form-datepicker 
+                id="date" 
+                class="mb-2" 
+                v-model="date" 
+                :state="date">
+              </b-form-datepicker>
+              <b-form-invalid-feedback :state="date">Completa el campo requerido</b-form-invalid-feedback>
             </b-form-group>
 
             <!-- Correo electronico -->
@@ -50,26 +72,46 @@
 
             <!-- Numero telefonico -->
             <b-form-group id="phone-1" label="Telefono" label-for="phone" description="">
-              <b-form-input id="phone" type="number" placeholder="Numero telefonico" v-model="form.phone" :state="phone"></b-form-input>
-              <b-form-invalid-feedback :state="phone">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="phone"></b-form-valid-feedback>
+              <b-form-input 
+                id="phone"
+                name="phone"
+                placeholder="Numero telefonico" 
+                v-model="form.phone" 
+                v-validate="{required: true, digits: 10}"
+                :state="validateState('phone')"
+                aria-describedby="phone-feedback"
+                @keypress="validarNumero"
+                @paste="validarNumero">
+              </b-form-input>
+              <b-form-invalid-feedback id="phone-feedback">Solo se admite 10 digitos</b-form-invalid-feedback>
             </b-form-group>
 
             <!-- Fotografia -->
-            <b-form-file id="file" accept=".jpg, .png, .gif" placeholder="Escoge la imagen" plain></b-form-file>
+            <b-form-file 
+              id="file" 
+              accept=".jpg, .png, .gif" 
+              placeholder="Escoge la imagen"
+              v-validate="{size: 3}" 
+              plain>
+            </b-form-file>
           </b-col>
 
           <b-col cols="6">
             <h3>Dirección</h3>
             <!-- Direccion -->
-            <b-form-group id="cp-1" label="Codigo Postal" label-for="cp" description="">
-              <b-form-input id="cp" type="number" placeholder="Ingresa tu codigo postal" v-model="form.cp" :state="cp" ></b-form-input>
-              <b-form-invalid-feedback :state="cp">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback></b-form-valid-feedback>
+            <b-form-group id="cp-1" label="Codigo Postal" label-for="cp">
+              <b-form-input 
+                id="cp" 
+                name="cp" 
+                placeholder="Ingresa tu codigo postal"
+                v-model="form.cp" 
+                v-validate="{required: true, digits: 5}"
+                :state="validateState('cp')"
+                aria-describedby="cp-feedback"
+                @keypress="validarNumero"
+                @paste="validarNumero" >
+              </b-form-input>
+              <b-form-invalid-feedback id="cp-feedback">Ingresa el codigo postal</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group id="street-1" label="Calle" label-for="street" description="">
@@ -81,19 +123,31 @@
             </b-form-group>
 
             <b-form-group id="number-1" label="Numero" label-for="number" description="">
-              <b-form-input id="number" placeholder="Ingresa el numero donde reside" v-model="form.number" :state="number" ></b-form-input>
-              <b-form-invalid-feedback :state="number">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback></b-form-valid-feedback>
+              <b-form-input 
+                id="number" 
+                name="number"
+                placeholder="Ingresa el numero donde reside" 
+                v-model="form.number" 
+                v-validate="{required: true, digits: 5}"
+                :state="validateState('number')"
+                aria-describedby="number-feedback"
+                @keypress="validarNumero"
+                @paste="validarNumero">
+              </b-form-input>
+              <b-form-invalid-feedback id="number-feedback">Completa el campo requerido</b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group id="city-1" label="Ciudad" label-for="city" description="">
-              <b-form-input id="city" placeholder="Ciudad donde vive" v-model="form.city" :state="city"></b-form-input>
-              <b-form-invalid-feedback :state="city">
-                Completa el campo requerido
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback></b-form-valid-feedback>
+              <b-form-input 
+                id="city" 
+                name="city"
+                placeholder="Ciudad donde vive" 
+                v-model="form.city" 
+                v-validate="{ required: true, min: 4, max: 10, alpha }" 
+                :state="validateState('city')"
+                aria-describedby="city-feedback">
+              </b-form-input>
+              <b-form-invalid-feedback id="city-feedback">Completa el campo requerido</b-form-invalid-feedback>
             </b-form-group>
 
           </b-col>
@@ -112,43 +166,31 @@ export default {
       form: {
         name: '',
         lastname: '',
-        email: '',
+        surname: '',
         phone: '',
-        cp: '',
-        street: '',
-        number: '',
-        city: '',
       },
     }
   },
-  computed: {
-    name(){
-      return this.form.name.length > 4 && this.form.name.length < 30 
-    },
-    lastname(){
-      return this.form.lastname.length > 4 && this.form.lastname.length < 10 
-    },
-    email(){
-      return this.form.email.includes('@') && this.form.email.includes('.')
-    },
-    phone(){
-      return this.form.phone.length > 9 && this.form.phone.length < 11
-    },
-    cp(){
-      return this.form.cp.length > 4 && this.form.cp.length < 6
-    },
-    street(){
-      return this.form.street.length > 4 && this.form.street.length < 30
-    },
-    number(){
-      return this.form.number.length > 0 && this.form.number.length < 5
-    },
-    city(){
-      return this.form.city.length > 4 && this.form.city.length < 30
-    },
-    date(){
-      return this.form.date ? true : false
+  methods: {
+    validateState(ref) {
+      if (this.veeFields[ref] && (this.veeFields[ref].dirty || this.veeFields[ref].validated)
+      ){
+    return !this.veeErrors.has(ref);
     }
+    return null
+    },
+    onSubmit() {
+      this.$validator.validateAll().then(result => {
+        if (!result){
+          return
+        }
+      })
+    },
+    validarNumero(event) {
+      if (!(event.charCode >= 48 && event.charCode <= 57)) {
+        event.preventDefault(); // Evita que se ingrese el carácter no deseado
+      }
+    },
   }
 }
 </script>
